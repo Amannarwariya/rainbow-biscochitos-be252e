@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#111827">
+<title>QRFlow — Dynamic QR Code Generator &amp; Link Manager</title>
+<meta name="description" content="Create dynamic QR codes, share or download QR images, and update destination links anytime without changing the printed QR code.">
+<meta name="keywords" content="dynamic QR code generator, QR code manager, editable QR code, QR code sharing, QR code PNG download, dynamic QR redirects">
+<meta name="robots" content="index,follow">
+<meta property="og:title" content="QRFlow — Dynamic QR Code Generator">
+<meta property="og:description" content="Create, share, download, and manage dynamic QR codes with editable destination links.">
+<meta property="og:type" content="website">
+<link rel="stylesheet" href="/src/styles.css">
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
+</head>
+<body>
+<div id="loginView" class="login-wrap">
+  <form id="loginForm" class="login-card">
+    <div class="logo">⌁</div><p class="eyebrow">QRFLOW QR WORKSPACE</p><h1>Admin login</h1>
+    <p class="muted">Sign in to manage permanent QR links.</p>
+    <label>Username<input id="username" autocomplete="username" placeholder="Enter your admin username" required></label>
+    <label>Password<input id="password" type="password" autocomplete="current-password" placeholder="Enter admin password" required></label>
+    <button class="primary wide">Login <span>→</span></button><p id="loginError" class="error"></p>
+    <p class="hint">Default username: <b>admin</b>. Use your configured admin credentials to sign in.</p>
+  </form>
+</div>
+<div id="appView" class="hidden">
+  <aside class="sidebar"><a class="brand" href="#"><span class="logo mini">⌁</span> QRFlow<span></span></a><p class="side-label">WORKSPACE</p><div class="nav active">▦ &nbsp; QR Redirects</div><div class="sidebar-bottom"><div class="avatar">A</div><div class="admin-label"><b>Administrator</b><small>Local admin session</small></div><button id="logout" class="icon-btn" title="Logout">↪</button></div></aside>
+  <main class="main">
+    <header class="topbar"><div><p class="eyebrow">WORKSPACE / LINK MANAGEMENT</p><h1>Dynamic QR Code Manager</h1></div><button id="createBtn" class="primary">＋ Create QR</button></header>
+    <section class="banner"><div><h2>One QR. Change the destination anytime.</h2><p>QR ID stays the same. Update the redirect URL and save it live.</p></div><span class="live-pill"><i></i> Live redirect</span></section>
+    <section class="stats"><article><span>Total QR codes</span><b id="total">0</b><small>Saved redirect records</small></article><article><span>Active QR codes</span><b id="active">0</b><small>Ready to redirect</small></article><article><span>TXT backup</span><b id="backupStatus">Not exported</b><small>Download or restore your data</small></article></section>
+    <section class="panel">
+      <div class="panel-head"><div><h2>QR redirects</h2><p class="muted">Edit current and updated links. Use Live Save to apply a redirect immediately.</p></div><div class="tools"><input id="search" type="search" placeholder="Search QR name, ID, or destination URL…"><button id="exportBtn" class="secondary">↓ Export TXT</button><label class="secondary file-label">↑ Import TXT<input id="importFile" type="file" accept=".txt,.json, text/plain, application/json" hidden></label></div></div>
+      <div id="qrList" class="qr-list"></div>
+      <div id="empty" class="empty"><div class="empty-symbol">▦</div><h3>No QR codes yet</h3><p>Create a QR code to get a permanent ID such as <b>adb121der</b>.</p><button id="emptyCreate" class="primary">Create first QR code</button></div>
+      <div class="foot"><span id="countLabel">0 records</span><span>Live save writes to the Netlify function's data file</span></div>
+    </section>
+    <footer>QRFlow <span>·</span> Dynamic QR code management with TXT backup</footer>
+  </main>
+</div>
+<div id="createModal" class="overlay hidden"><form id="createForm" class="modal"><div class="modal-head"><div><p class="eyebrow">NEW DYNAMIC QR</p><h2>Create permanent QR code</h2></div><button type="button" class="icon-btn" id="closeCreate">×</button></div><label>QR name<input id="newName" placeholder="Give this QR a name (e.g. Shop poster, Menu, Instagram)" maxlength="80" required></label><label>Current redirect link<input id="newUrl" type="url" placeholder="Paste the full destination link (https://example.com)" required></label><p id="createError" class="error"></p><div class="modal-actions"><button type="button" class="secondary" id="cancelCreate">Cancel</button><button class="primary">Create QR code</button></div></form></div>
+<div id="qrModal" class="overlay hidden"><div class="modal qr-modal"><div class="modal-head"><div><p class="eyebrow">PERMANENT QR CODE</p><h2 id="qrModalName">QR code</h2><p class="muted">Scan this image to follow the current destination.</p><p id="qrError" class="error" role="alert"></p></div><button type="button" class="icon-btn" id="closeQr" aria-label="Close QR preview">×</button></div><div class="canvas-wrap"><canvas id="bigQr" width="260" height="260"></canvas></div><label>Permanent QR URL<div class="copyline"><input id="permalink" readonly><button type="button" id="copyLink" class="secondary">Copy</button></div></label><div class="modal-actions"><button type="button" id="shareQr" class="secondary">↗ Share QR</button><button type="button" id="downloadQr" class="secondary">↓ Download PNG</button><button type="button" id="doneQr" class="primary">Done</button></div></div></div>
+<div id="toast" class="toast"></div>
+<script src="/src/app.js"></script>
+</body></html>

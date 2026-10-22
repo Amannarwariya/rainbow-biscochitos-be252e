@@ -1,0 +1,8 @@
+[build]
+  publish = "."
+
+[[redirects]]
+  from = "/r/*"
+  to = "/.netlify/functions/redirect?id=:splat"
+  status = 200
+  force = true
